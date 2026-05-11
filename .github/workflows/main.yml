@@ -27,6 +27,10 @@ jobs:
           push: true
           # Thay 'saigoncoins' bằng đúng username Docker Hub của bạn nếu khác
           tags: saigoncoins/saigoncoins-backend:latest
+      - name: Build Services
+        run: |
+          cd producetion
+          docker compose build
   build-frontend:
       runs-on: ubuntu-latest
       steps:
