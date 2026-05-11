@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Sản Phẩm</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <link rel="stylesheet" href="../public/stylesheets/sanpham.css">
+    <link rel="stylesheet" href="../public/stylesheets/chiTietSanPham.css">
+</head>
+<body>
+    <nav class="top-bar">
+        <div class="logo">SaigonCoins</div>
+        <div class="info">
+            <span><i class="bi bi-telephone-fill"></i> 03 7904 8551</span> |
+            <a href="dangky.html">Đăng ký</a> |
+            <a href="dangnhap.html">Đăng nhập</a> |
+            <a href="gioHang.html"> <i class="bi bi-bag" onclick="showgiohang()"></i></a>
+        </div>
+    </nav>
+
+    <!-- Thanh menu thứ hai -->
+    <nav class="menu-bar">
+        <ul>
+            <li>
+                <a href="trangchu.html">SaigonCoins</a>
+                <ul class="submenu">
+                    <li><a href="#">Thông tin liên hệ</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Nhẫn</a></li>
+            <li><a href="sanpham.html">Lắc tay</a></li>
+            <li><a href="#">Dây chuyền</a></li>
+            <li><a href="#">Khuyên tai</a></li>
+            <li>
+                <a href="#">Phụ kiện đôi</a>
+                <ul class="submenu">
+                    <li><a href="">Lắc đôi</a></li>
+                    <li><a href="">Nhẫn đôi</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="search-bar">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Tìm kiếm...">
+        </div>
+    </nav>
+
+
+    <div class="breadcrumb">
+        <a href="#"><i class="fas fa-home"></i> Trang chủ</a> / 
+        <a href="#">New Collections</a> / R MIDI BIG SQUARE GEM AND GEM LINE
+    </div>
+    <div class="product-detail">
+        <div class="product-images">
+            <img id="main-image" class="main-image" src="" alt="Ảnh sản phẩm">
+            <div class="thumbnail-images">
+                <img class="thumb1" src="" alt="Ảnh sản phẩm">
+                <img class="thumb2" src="" alt="Ảnh sản phẩm">
+                <img class="thumb3" src="" alt="Ảnh sản phẩm">
+            </div>
+        </div>
+        <div class="product-info">
+            <h1 id="product-title"></h1>
+            <p class="status">Tình trạng: <span class="highlight">Liên hệ Facebook để check số lượng</span></p>
+            <p class="product-code">Mã SP: VI-2408-4-045</p>
+            <p class="description">Thông tin sản phẩm đang được cập nhật.</p>
+            <p>Giá: <span id="price"></span></p>
+            <div class="quantity">
+                <label for="quantity">Số lượng:</label>
+                <button onclick="updateQuantity(-1)"><i class="fas fa-minus"></i></button>
+                <input type="number" id="quantity" value="1">
+                <button onclick="updateQuantity(1)"><i class="fas fa-plus"></i></button>
+            </div>
+            <div class="button-container">
+                <button class="btn-primary1" onclick="buyNow()">
+                    Mua ngay
+                </button>
+                <button class="btn-primary2" onclick="addToCart()">
+                    Thêm vào giỏ hàng
+                </button>
+            </div>
+            <div class="wishlist">
+                <button class="btn-secondary">
+                    <i class="far fa-heart"></i> Thêm vào yêu thích
+                </button>
+            </div>
+            <div class="share">
+                <p>Chia sẻ:</p>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-pinterest"></i></a>
+                <a href="#"><i class="fab fa-google"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="our-story">
+        <h2>OUR STORY - CHUYỆN CHƯA KỂ</h2>
+        <p>
+            Lắc chân bạc cao cấp 925 với thiết kế tinh xảo và nhiều mẫu mã đẹp. Bạn sẽ thật sự bị cuốn hút bởi món trang sức ngày càng được yêu thích này.
+        </p>
+        <ul>
+            <li><strong>Thông tin sản phẩm:</strong></li>
+            <ul>
+                <li>Chất liệu sản phẩm: bạc cao cấp 925.</li>
+                <li>Độ dài: Lắc chân bên Kat có độ dài tầm 22-23cm. Kèm 3cm tăng đưa để các bạn có thể điều chỉnh độ dài.</li>
+                <li>Thiết kế dây móc xích chắc chắn phù hợp để các nàng có thể mang hàng ngày.</li>
+            </ul>
+            <li><strong>Ý nghĩa của việc sở hữu chiếc lắc chân:</strong></li>
+            <ul>
+                <li>
+                    Lắc chân là biểu tượng của vòng tròn không có điểm đầu và điểm cuối, đặc biệt trong tình yêu thì người ta luôn mong muốn tình yêu của mình trường tồn mãi theo thời gian.
+                    Ngoài ra, tặng lắc chân còn mang một ý nghĩa tình cảm sâu sắc hơn, người con trai muốn nâng niu đôi bàn chân của bạn gái – người họ yêu thương.
+                </li>
+                <li>Đeo lắc chân mang đến sự tự tin trên từng bước chân.</li>
+                <li>
+                    Thiết kế tinh xảo, bắt trend, sáng tạo,... với nhiều mẫu mã, kiểu dáng, bạn có thể mặc sức lựa chọn để tạo ấn tượng, nét riêng cho cổ chân của mình.
+                </li>
+            </ul>
+        </ul>
+        <p>
+            Lắc chân bạc cao cấp 925 sẽ là cầu nối để bạn trao trọn yêu thương cho người thân, người yêu. Hãy nhanh tay thể hiện tình cảm của mình bằng món quà tặng độc đáo
+            nhỏ nhắn nhưng có sức mạnh vô hình này nhé bạn!
+        </p>
+       
+    </div>
+   
+    <div class="related-products">
+        <h2>SẢN PHẨM LIÊN QUAN</h2>
+        <div class="product-list">
+            <div class="product-item">
+                <img src="./public/img/lacTay/l1.webp" alt="ANK FIGERO TINKERBELL GEM AND BIG GEM">
+                <p class="product-name">ANK FIGERO TINKERBELL GEM AND BIG GEM</p>
+                <p class="product-price">390.000<span>đ</span></p>
+            </div>
+            <div class="product-item">
+                <img src="./public/img/lacTay/l2.webp" alt="ANK TRIPLE SPECIAL FLOWER AND DOUBLE PEARL">
+                <p class="product-name">ANK TRIPLE SPECIAL FLOWER AND DOUBLE PEARL</p>
+                <p class="product-price">590.000<span>đ</span></p>
+            </div>
+            <div class="product-item">
+                <img src="./public/img/lacTay/l3.webp" alt="ANK MICRO CLIP PEARL AND STAR">
+                <p class="product-name">ANK MICRO CLIP PEARL AND STAR</p>
+                <p class="product-price">590.000<span>đ</span></p>
+            </div>
+           
+        </div>
+    </div>
+    <footer>
+        <div class="container_footer">
+            <div class="container_footer_content">
+
+                <ul>
+                    <li>Dịch vụ khách hàng</li>
+                    <li>Chính sách khách hàng thân thiết</li>
+                    <li>Chính sách đổi trả</li>
+                    <li>Chính sách bảo mật</li>
+                    <li>Chính sách sử dụng cookies </li>
+                    <li>Chính sách thanh toán, giao nhận</li>
+                    <li>Hướng dẫn chọn size</li>
+                </ul>
+
+            </div>
+            <div class="container_footer_content">
+                <ul>
+                    <li>Về chúng tôi</li>
+                    <li class="button">Giới thiệu</li>
+                    <li>Liên hệ</li>
+                    <li>Tuyển dụng</li>
+                    <li>Tin tức</li>
+                    <li>Hệ thống cửa hàng</li>
+                    <li>Khuyến mãi</li>
+                </ul>
+            </div>
+            <div class="container_footer_content">
+                <ul>
+                    <li>SaigonCoins lắng nghe bạn</li>
+                    <li>Chúng tôi luôn trân trọng và mong đợi được nhận được
+                        mọi ý kiến đóng góp từ khách hàng để có thể nâng cấp
+                        trải nghiệm dịch vụ và sản phẩm tốt hơn nữa</li>
+                    <li><i class="bi bi-telephone"></i>
+                        <label for="">Liên hệ đặt hàng<br>
+                            0379048551</label>
+                    </li>
+                    <li><i class="bi bi-question-circle"></i>
+                        <label for="">Góp ý khiếu nại<br>
+                            0310 2005</label>
+                    </li>
+                    <li><i class="bi bi-envelope-at"></i>
+                        <label for="">Email<br>
+                            chamsockhachhang.SaigonCoins.vn</label>
+                    </li>
+                </ul>
+
+                <div class="container_footer_content_icons">
+                    <i class="bi bi-facebook"></i>
+                    <i class="bi bi-instagram"></i>
+                    <i class="bi bi-tiktok"></i>
+                    <i class="bi bi-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+        <div class="footer_end">
+            <div class="footer_end_text">
+                <label for="">Công ty cổ phần thời trang SaigonCoins</label>
+                <label for="">Mã số doanh nghiệp: 012345678910. Giấy chứng nhận đăng ký doanh nghiệp do<br>
+                    Sở Kế hoạch và Đầu tư TP HCMcấp lần đầu ngày 04/03/2017</label>
+            </div>
+            <img src="./public/img/banner/logofooter (1).png" alt="">
+            <img src="./public/img/banner/logofooter (2).png" alt="">
+        </div>
+    </footer>
+</body>
+</html>
+<script src="./src/chiTietSanPham.js"></script>

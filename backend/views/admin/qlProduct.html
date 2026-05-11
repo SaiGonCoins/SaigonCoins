@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý sản phẩm</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+ 
+</head>
+<body>
+    <h1>Quản lý sản phẩm</h1>
+
+    <!-- Bộ lọc danh mục -->
+    <label for="category-filter">Lọc theo danh mục:</label>
+    <select id="category-filter" onchange="fetchData()">
+        <option value="all">Tất cả</option>
+        <option value="nhan">Nhẫn</option>
+        <option value="lac-tay">Lắc tay</option>
+        <option value="day-chuyen">Dây chuyền</option>
+        <option value="khuyen-tai">Khuyên tai</option>
+    </select>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá (VND)</th>
+                <th>Hình ảnh</th>
+                <th>Mô tả</th>
+                <th>Danh mục</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody id="product-list"></tbody>
+    </table>
+
+    <h2>Thêm / Sửa Sản Phẩm</h2>
+    <form id="product-form">
+        <input type="hidden" id="product-id">
+        <label>Tên sản phẩm:</label>
+        <input type="text" id="product-name" required>
+        
+        <label>Giá (VND):</label>
+        <input type="number" id="product-price" required>
+
+        <label>Mô tả:</label>
+        <input type="text" id="product-description" required>
+
+        <label>Hình ảnh:</label>
+        <input type="file" id="product-image" accept="image/*">
+
+        <label>Danh mục:</label>
+        <select id="product-category" required>
+            <option value="nhan">Nhẫn</option>
+            <option value="lac-tay">Lắc tay</option>
+            <option value="day-chuyen">Dây chuyền</option>
+            <option value="khuyen-tai">Khuyên tai</option>
+        </select>
+
+        <button type="submit">Lưu</button>
+        <button type="button" onclick="resetForm()">Hủy</button>
+    </form>
+</body>
+</html>
+<script type="module" src="../src/admin/qlProduct.js"></script>

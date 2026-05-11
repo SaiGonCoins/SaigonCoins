@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <link rel="stylesheet" href="../public/stylesheets/login.css">
+</head>
+<body>
+    <nav class="top-bar">
+        <div class="logo">SaigonCoins</div>
+        <div class="info">
+            <span><i class="bi bi-telephone-fill"></i> 03 7904 8551</span> |
+            <a href="dangky.html">Đăng ký</a> |
+            <a href="dangnhap.html">Đăng nhập</a> |
+            <a href="gioHang.html"> <i class="bi bi-bag" onclick="showgiohang()"></i></a>
+        </div>
+    </nav>
+
+    <!-- Thanh menu thứ hai -->
+    <nav class="menu-bar">
+        <ul>
+            <li>
+                <a href="trangchu.html">SaigonCoins</a>
+                <ul class="submenu">
+                    <li><a href="#">Thông tin liên hệ</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Nhẫn</a></li>
+            <li><a href="sanpham.html">Lắc tay</a></li>
+            <li><a href="#">Dây chuyền</a></li>
+            <li><a href="#">Khuyên tai</a></li>
+            <li>
+                <a href="#">Phụ kiện đôi</a>
+                <ul class="submenu">
+                    <li><a href="">Lắc đôi</a></li>
+                    <li><a href="">Nhẫn đôi</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="search-bar">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Tìm kiếm...">
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Đăng nhập</h1>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Nhập email" required>
+        
+        <label for="password">Mật khẩu</label>
+        <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
+        
+        <button id="login-btn">Đăng nhập</button>
+        <p id="error-message" style="color: red; display: none;"></p>
+    </div>
+    <footer>
+        <div class="container_footer">
+            <div class="container_footer_content">
+
+                <ul>
+                    <li>Dịch vụ khách hàng</li>
+                    <li>Chính sách khách hàng thân thiết</li>
+                    <li>Chính sách đổi trả</li>
+                    <li>Chính sách bảo mật</li>
+                    <li>Chính sách sử dụng cookies </li>
+                    <li>Chính sách thanh toán, giao nhận</li>
+                    <li>Hướng dẫn chọn size</li>
+                </ul>
+
+            </div>
+            <div class="container_footer_content">
+                <ul>
+                    <li>Về chúng tôi</li>
+                    <li class="button">Giới thiệu</li>
+                    <li>Liên hệ</li>
+                    <li>Tuyển dụng</li>
+                    <li>Tin tức</li>
+                    <li>Hệ thống cửa hàng</li>
+                    <li>Khuyến mãi</li>
+                </ul>
+            </div>
+            <div class="container_footer_content">
+                <ul>
+                    <li>SaigonCoins lắng nghe bạn</li>
+                    <li>Chúng tôi luôn trân trọng và mong đợi được nhận được
+                        mọi ý kiến đóng góp từ khách hàng để có thể nâng cấp
+                        trải nghiệm dịch vụ và sản phẩm tốt hơn nữa</li>
+                    <li><i class="bi bi-telephone"></i>
+                        <label for="">Liên hệ đặt hàng<br>
+                            0379048551</label>
+                    </li>
+                    <li><i class="bi bi-question-circle"></i>
+                        <label for="">Góp ý khiếu nại<br>
+                            0310 2005</label>
+                    </li>
+                    <li><i class="bi bi-envelope-at"></i>
+                        <label for="">Email<br>
+                            chamsockhachhang.SaigonCoins.vn</label>
+                    </li>
+                </ul>
+
+                <div class="container_footer_content_icons">
+                    <i class="bi bi-facebook"></i>
+                    <i class="bi bi-instagram"></i>
+                    <i class="bi bi-tiktok"></i>
+                    <i class="bi bi-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+        <div class="footer_end">
+            <div class="footer_end_text">
+                <label for="">Công ty cổ phần thời trang SaigonCoins</label>
+                <label for="">Mã số doanh nghiệp: 012345678910. Giấy chứng nhận đăng ký doanh nghiệp do<br>
+                    Sở Kế hoạch và Đầu tư TP HCMcấp lần đầu ngày 04/03/2017</label>
+            </div>
+            <!-- <img src="./public/img/banner/logofooter (1).png" alt="">
+            <img src="./public/img/banner/logofooter (2).png" alt=""> -->
+        </div>
+    </footer>
+    <script src="./src/login.js"></script>
+</body>
+</html>

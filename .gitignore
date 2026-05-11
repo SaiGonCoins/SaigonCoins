@@ -1,0 +1,35 @@
+# --- THƯ VIỆN & PHỤ THUỘC ---
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+frontend/.next/
+
+# --- FILE MÔI TRƯỜNG & BẢO MẬT (CỰC KỲ QUAN TRỌNG) ---
+.env
+backend/.env
+frontend/.env
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+
+# --- DỮ LIỆU & BACKUP (KHÔNG ĐƯA LÊN GITHUB) ---
+backup_data/
+backend/backup_data/
+*.db
+*.sqlite
+*.log
+npm-debug.log*
+
+# --- FILE BUILD & TẠM THỜI ---
+dist/
+build/
+backend/dist/
+frontend/out/
+frontend/build/
+
+# --- CẤU HÌNH HỆ ĐIỀU HÀNH & IDE ---
+.DS_Store
+.vscode/
+.idea/
+Thumbs.db

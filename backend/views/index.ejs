@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý sản phẩm</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    input, select, button {
+      margin: 5px 0;
+      padding: 8px;
+      width: 100%;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .edit-btn {
+      background-color: orange;
+      color: white;
+      border: none;
+    }
+
+    .delete-btn {
+      background-color: red;
+      color: white;
+      border: none;
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Quản lý sản phẩm</h1>
+
+  <!-- Bộ lọc danh mục -->
+  <label for="category-filter">Lọc theo danh mục:</label>
+  <select id="category-filter" onchange="fetchData()">
+    <option value="all">Tất cả</option>
+    <option value="nhan">Nhẫn</option>
+    <option value="lac-tay">Lắc tay</option>
+    <option value="day-chuyen">Dây chuyền</option>
+    <option value="khuyen-tai">Khuyên tai</option>
+  </select>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tên sản phẩm</th>
+        <th>Giá (VND)</th>
+        <th>Hình ảnh</th>
+        <th>Mô tả</th>
+        <th>Danh mục</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody id="product-list"></tbody>
+  </table>
+
+  <h2>Thêm / Sửa Sản Phẩm</h2>
+  <form id="product-form">
+    <input type="hidden" id="product-id">
+    <label>Tên sản phẩm:</label>
+    <input type="text" id="product-name" required>
+    
+    <label>Giá (VND):</label>
+    <input type="number" id="product-price" required>
+
+    <label>Mô tả:</label>
+    <input type="text" id="product-description" required>
+
+    <label>Hình ảnh:</label>
+    <input type="file" id="product-image" accept="image/*">
+
+    <label>Danh mục:</label>
+    <select id="product-category" required>
+      <option value="nhan">Nhẫn</option>
+      <option value="lac-tay">Lắc tay</option>
+      <option value="day-chuyen">Dây chuyền</option>
+      <option value="khuyen-tai">Khuyên tai</option>
+    </select>
+
+    <button type="submit">Lưu</button>
+    <button type="button" onclick="resetForm()">Hủy</button>
+  </form>
+
+  <script>
+    const apiUrl = "http://localhost:3000/products";
+
+    async function fetchData() {
+      try {
+        let category = document.getElementById("category-filter").value;
+        let res = await axios.get(`${apiUrl}?category=${category}`);
+        let products = res.data.products;
+        let productList = document.getElementById("product-list");
+        productList.innerHTML = "";
+
+        products.forEach(product => {
+          let row = `<tr>
+                      <td>${product._id}</td>
+                      <td>${product.name}</td>
+                      <td>${product.price.toLocaleString()} VND</td>
+                      <td><img src="/${product.image}" alt="Ảnh sản phẩm"></td>
+                      <td>${product.description}</td>
+                      <td>${product.category}</td>
+                      <td>
+                        <button class="edit-btn" onclick="editProduct('${product._id}', '${product.name}', ${product.price}, '${product.description}', '${product.image}', '${product.category}')">Sửa</button>
+                        <button class="delete-btn" onclick="deleteProduct('${product._id}')">Xóa</button>
+                      </td>
+                    </tr>`;
+          productList.innerHTML += row;
+        });
+      } catch (error) {
+        console.error("Lỗi khi fetch dữ liệu:", error);
+      }
+    }
+
+    document.getElementById("product-form").addEventListener("submit", async function (event) {
+      event.preventDefault();
+      let formData = new FormData();
+      let id = document.getElementById("product-id").value;
+      formData.append("name", document.getElementById("product-name").value);
+      formData.append("price", document.getElementById("product-price").value);
+      formData.append("description", document.getElementById("product-description").value);
+      formData.append("category", document.getElementById("product-category").value);
+      formData.append("image", document.getElementById("product-image").files[0]);
+
+      try {
+        if (id) {
+          await axios.put(`${apiUrl}/edit/${id}`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+        } else {
+          await axios.post(`${apiUrl}/add`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+        }
+        resetForm();
+        fetchData();
+      } catch (error) {
+        console.error("Lỗi khi thêm/cập nhật sản phẩm:", error);
+      }
+    });
+
+    async function deleteProduct(id) {
+      if (confirm("Bạn có chắc muốn xóa sản phẩm này?")) {
+        try {
+          await axios.delete(`${apiUrl}/delete/${id}`);
+          fetchData();
+        } catch (error) {
+          console.error("Lỗi khi xóa sản phẩm:", error);
+        }
+      }
+    }
+
+    function editProduct(id, name, price, description, image, category) {
+      document.getElementById("product-id").value = id;
+      document.getElementById("product-name").value = name;
+      document.getElementById("product-price").value = price;
+      document.getElementById("product-description").value = description;
+      document.getElementById("product-category").value = category;
+    }
+
+    function resetForm() {
+      document.getElementById("product-id").value = "";
+      document.getElementById("product-name").value = "";
+      document.getElementById("product-price").value = "";
+      document.getElementById("product-description").value = "";
+      document.getElementById("product-image").value = "";
+      document.getElementById("product-category").value = "nhan";
+    }
+
+    fetchData();
+  </script>
+</body>
+
+</html>

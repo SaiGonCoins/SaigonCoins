@@ -1,0 +1,51 @@
+name: saigoncoins
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: saigon_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ../backup_data:/data/backup # Mount thư mục backup vào để dễ restore
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: 
+      context: ../backend
+      dockerfile: Dockerfile # Đảm bảo đường dẫn này đúng với file Dockerfile của bạn
+    container_name: saigon_backend
+    ports:
+      - "7000:7000"
+    environment:
+      # Sửa lại kết nối trực tiếp đến service mongodb bên trong mạng Docker
+      - MONGO_URI=mongodb://mongodb:27017/SaigonCoins
+    volumes:
+      - ../backend:/app
+      - /app/node_modules
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  frontend:
+    build: 
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: saigon_frontend
+    ports:
+      - "3001:3000"
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - backend
+    command: npm run dev
+
+volumes:
+  mongo_data:
