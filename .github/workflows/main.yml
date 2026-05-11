@@ -26,4 +26,4 @@ jobs:
           context: ./backend
           push: true
           # Thay 'saigoncoins' bằng đúng username Docker Hub của bạn nếu khác
-          tags: saigoncoins/saigon-backend:latest
+          tags: saigoncoins/saigoncoins-backend:latest
