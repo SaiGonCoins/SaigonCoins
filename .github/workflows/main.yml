@@ -1,0 +1,29 @@
+name: Build and Push Docker Image
+
+# Kịch bản này chạy khi bạn push code lên nhánh main
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          # Đây là nơi nó lấy dữ liệu từ "két sắt" Secrets bạn vừa cài
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Backend
+        uses: docker/build-push-action@v5
+        with:
+          # Trỏ vào thư mục backend nơi có file Dockerfile của bạn
+          context: ./backend
+          push: true
+          # Thay 'saigoncoins' bằng đúng username Docker Hub của bạn nếu khác
+          tags: saigoncoins/saigon-backend:latest
