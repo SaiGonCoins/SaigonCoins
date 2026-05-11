@@ -1,10 +1,11 @@
-# --- THƯ VIỆN & PHỤ THUỘC ---
+# --- THƯ VIỆN & PHỤ THUỘC (NẶNG & TỰ CÀI LẠI ĐƯỢC) ---
 node_modules/
 backend/node_modules/
 frontend/node_modules/
 frontend/.next/
 
 # --- FILE MÔI TRƯỜNG & BẢO MẬT (CỰC KỲ QUAN TRỌNG) ---
+.env
 .env
 backend/.env
 frontend/.env

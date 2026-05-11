@@ -13,6 +13,7 @@ import {
   Alert,
 } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { API_BASE } from '@/app/lib/api';
 import Link from 'next/link';
 
 interface Product {
@@ -44,10 +45,11 @@ export default function AdminProducts() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('http://localhost:7000/products');
+        const res = await fetch(`${API_BASE}/products`);
         const data = await res.json();
         setProducts(data.products);
-      } catch (err) {
+      } catch (error) {
+        console.error(error);
         alert('Không thể tải danh sách sản phẩm!');
       }
     };
@@ -74,8 +76,8 @@ export default function AdminProducts() {
 
     const method = editingId ? 'PUT' : 'POST';
     const url = editingId
-      ? `http://localhost:7000/products/edit/${editingId}`
-      : `http://localhost:7000/products/add`;
+      ? `${API_BASE}/products/edit/${editingId}`
+      : `${API_BASE}/products/add`;
 
     try {
       const res = await fetch(url, {
@@ -99,7 +101,7 @@ export default function AdminProducts() {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`http://localhost:7000/products/delete/${id}`, {
+      const response = await fetch(`${API_BASE}/products/delete/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) throw new Error('Không thể xóa sản phẩm.');
@@ -286,8 +288,8 @@ export default function AdminProducts() {
                                 // product.img may already be stored as "images/filename.jpg" or just "filename.jpg"
                                 const imgPath = product.img || '';
                                 const src = imgPath.startsWith('images/')
-                                  ? `http://localhost:7000/${imgPath}`
-                                  : `http://localhost:7000/images/${imgPath}`;
+                                  ? `/${imgPath}`
+                                  : `/images/${imgPath}`;
                                 return (
                                   <Image
                                     src={src}

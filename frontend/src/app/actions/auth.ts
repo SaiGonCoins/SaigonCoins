@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { SignupFormSchema, FormState, LoginFormSchema } from '@/app/lib/definitions';
+import { API_BASE } from '@/app/lib/api';
 
 
 export async function signup(state: FormState, formData: FormData) {
@@ -20,7 +21,7 @@ export async function signup(state: FormState, formData: FormData) {
   const { name, email, password, phone } = validatedFields.data;
 
   try {
-    const response = await fetch("http://localhost:7000/users/register", {
+    const response = await fetch(`${API_BASE}/users/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -68,7 +69,7 @@ export async function login(state: FormState, formData: FormData) {
   const { email, password } = validatedFields.data;
 
   try {
-    const response = await fetch("http://localhost:7000/users/login", {
+    const response = await fetch(`${API_BASE}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

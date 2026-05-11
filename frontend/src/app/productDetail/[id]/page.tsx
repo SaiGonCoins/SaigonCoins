@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { API_BASE } from "@/app/lib/api";
 import { FaFacebookF, FaTwitter, FaPinterest, FaHeart, FaGoogle } from "react-icons/fa";
 
 interface Product {
@@ -25,14 +26,14 @@ export default function ProductDetail() {
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`http://localhost:7000/products/${id}`)
+    fetch(`${API_BASE}/products/${id}`)
       .then((res) => res.json())
       .then((data) => setProduct(data.product))
       .catch((err) => console.error("Lỗi khi lấy dữ liệu sản phẩm:", err));
   }, [id]);
 
   useEffect(() => {
-    fetch("http://localhost:7000/products")
+    fetch(`${API_BASE}/products`)
       .then((res) => res.json())
       .then((data) => setRelatedProducts(data.products.slice(0, 3)))
       .catch((err) => console.error("Lỗi khi lấy sản phẩm liên quan:", err));

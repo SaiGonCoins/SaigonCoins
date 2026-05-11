@@ -13,6 +13,7 @@ import {
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Link from 'next/link';
+import { API_BASE } from '@/app/lib/api';
 
 interface User {
     _id: string;
@@ -36,7 +37,7 @@ export default function AdminUsers() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch("http://localhost:7000/users");
+                const res = await fetch(`${API_BASE}/users`);
                 if (!res.ok) {
                     const text = await res.text();
                     throw new Error(`HTTP ${res.status} - ${text}`);
@@ -83,8 +84,8 @@ export default function AdminUsers() {
         const body = { name, email, phone, role };
         const method = editingId ? "PUT" : "POST";
         const url = editingId
-            ? `http://localhost:7000/users/${editingId}`
-            : `http://localhost:7000/users`;
+            ? `${API_BASE}/users/${editingId}`
+            : `${API_BASE}/users`;
 
         try {
             const res = await fetch(url, {
@@ -142,7 +143,7 @@ export default function AdminUsers() {
         if (!window.confirm("Bạn có chắc chắn muốn xóa user này?")) return;
 
         try {
-            const res = await fetch(`http://localhost:7000/users/${id}`, {
+            const res = await fetch(`${API_BASE}/users/${id}`, {
                 method: "DELETE",
             });
 

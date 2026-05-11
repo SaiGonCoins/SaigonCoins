@@ -1,11 +1,23 @@
 name: saigoncoins
 
 services:
+  # --- NGINX: CỔNG RA VÀO ---
+  nginx:
+    image: nginx:stable-alpine
+    container_name: saigon_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ../nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    restart: always
   mongodb:
     image: mongo:latest
     container_name: saigon_mongodb
-    ports:
-      - "27017:27017"
+    # ports:
+    #   - "27017:27017"
     volumes:
       - mongo_data:/data/db
       - ../backup_data:/data/backup # Mount thư mục backup vào để dễ restore
@@ -20,8 +32,8 @@ services:
       context: ../backend
       dockerfile: Dockerfile # Đảm bảo đường dẫn này đúng với file Dockerfile của bạn
     container_name: saigon_backend
-    ports:
-      - "7000:7000"
+    # ports:
+    #   - "7000:7000"
     environment:
       # Sửa lại kết nối trực tiếp đến service mongodb bên trong mạng Docker
       - MONGO_URI=mongodb://mongodb:27017/SaigonCoins
@@ -37,8 +49,10 @@ services:
       context: ../frontend
       dockerfile: Dockerfile
     container_name: saigon_frontend
-    ports:
-      - "3001:3000"
+    expose:
+      - "3000"
+    # ports:
+    #   - "3001:3000"
     volumes:
       - ../frontend:/app
       - /app/node_modules

@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from "react";
+import { API_BASE } from '@/app/lib/api';
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -34,7 +35,7 @@ export default function Product() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:7000/products");
+        const res = await fetch(`${API_BASE}/products`);
         const data = await res.json();
         if (Array.isArray(data.products)) {
           setProducts(data.products);

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { API_BASE } from "@/app/lib/api";
 
 const banners = [
   "/images/slider_4.webp",
@@ -37,7 +38,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:7000/products")
+    fetch(`${API_BASE}/products`)
       .then((res) => res.json())
       .then((data) => {
         if (data.products) {
@@ -138,7 +139,7 @@ export default function Home() {
       <section className="text-center my-8 ">
         <h2 className="text-2xl font-bold">-- VÒNG TAY VINH CỬU --</h2>
         <p className="mt-2 text-lg">
-          PERMANENT JEWELRY <Link href="#" className="underline">"CLICK"</Link> ĐỂ XEM CHI TIẾT
+          PERMANENT JEWELRY <Link href="#" className="underline">&quot;CLICK&quot;</Link> ĐỂ XEM CHI TIẾT
         </p>
         <div className="flex justify-center items-center gap-5 mt-6">
           <div className="flex flex-col gap-5">

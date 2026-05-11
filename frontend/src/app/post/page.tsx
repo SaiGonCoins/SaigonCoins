@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { API_BASE } from '@/app/lib/api';
 
 interface Product {
   id: number;
@@ -16,7 +17,7 @@ const Post = () => {
     const fetchProducts = async () => {
       try {
         console.log("Fetching products...");
-        const response = await fetch('http://localhost:7000/products', {
+        const response = await fetch(`${API_BASE}/products`, {
           mode: 'cors',
           headers: { "Content-Type": "application/json" }
         });
@@ -30,7 +31,7 @@ const Post = () => {
 
         setProducts(data.products || []);
       } catch (error) {
-        console.error("Fetch error:", error.message);
+        console.error("Fetch error:", error instanceof Error ? error.message : String(error));
       } finally {
         setLoading(false);
       }

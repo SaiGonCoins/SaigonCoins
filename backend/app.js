@@ -12,13 +12,16 @@ var usersRouter = require("./routes/users");
 var productsRouter = require("./routes/products");
 var ordersRouter = require("./routes/orders");
 
-
-
 var app = express();
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(",") 
-  : ["http://localhost:3000", "http://localhost:3001", "http://localhost:4200"];
+  : ["http://localhost", "http://localhost:3000", "http://localhost:3001"];
+
+app.use("/", indexRouter);
+app.use("/api/users", usersRouter);    
+app.use("/api/products", productsRouter);
+app.use("/api/orders", ordersRouter);
 
 app.use(cors({
   origin: allowedOrigins,
@@ -47,11 +50,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/images", express.static(path.join(__dirname, "public/images")));
-
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/products", productsRouter);
-app.use("/orders", ordersRouter);
 
 app.post("/upload", upload.single("image"), (req, res) => {
   if (!req.file) {

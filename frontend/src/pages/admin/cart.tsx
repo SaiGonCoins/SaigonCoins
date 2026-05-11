@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { API_BASE } from '@/app/lib/api';
 import {
     Table,
     Container,
@@ -37,7 +38,7 @@ export default function AdminCart() {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const res = await fetch('http://localhost:7000/orders');
+                const res = await fetch(`${API_BASE}/orders`);
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
                 setOrders(Array.isArray(data) ? data : data.orders ?? []);
@@ -52,7 +53,7 @@ export default function AdminCart() {
 
     const updateStatus = async (id: string, nextStatus: string) => {
         try {
-            const res = await fetch(`http://localhost:7000/orders/${id}/status`, {
+            const res = await fetch(`${API_BASE}/orders/${id}/status`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: nextStatus }),
@@ -67,7 +68,7 @@ export default function AdminCart() {
     const handleDelete = async (id: string) => {
         if (!window.confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')) return;
         try {
-            const res = await fetch(`http://localhost:7000/orders/${id}`, { method: 'DELETE' });
+            const res = await fetch(`${API_BASE}/orders/${id}`, { method: 'DELETE' });
             if (!res.ok) throw new Error('Không thể xóa đơn hàng');
             setOrders((prev) => prev.filter(o => o._id !== id));
         } catch (err) {
