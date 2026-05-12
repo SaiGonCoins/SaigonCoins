@@ -14,6 +14,12 @@ var ordersRouter = require("./routes/orders");
 
 var app = express();
 
+app.use(logger("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
+
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(",") 
   : ["http://localhost", "http://localhost:3000", "http://localhost:3001"];
@@ -42,12 +48,6 @@ const upload = multer({ storage: storage });
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
