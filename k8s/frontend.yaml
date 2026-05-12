@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: saigon-frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1 # Có thể tăng lên 2 để dự phòng (High Availability)
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: saigon-frontend
+        image: saigoncoins/saigoncoins-frontend:v1
+        imagePullPolicy: IfNotPresent # Tiết kiệm băng thông nếu image đã có trên node
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m" # Frontend thường tốn ít CPU hơn backend lúc chạy tĩnh
+            memory: "256Mi"
+        ports:
+        - containerPort: 3000
+        # Kiểm tra xem app đã khởi động xong chưa
+        readinessProbe:
+          httpGet:
+            path: / # Thường kiểm tra trang chủ
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        # Kiểm tra app có còn sống không
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  # Nếu bạn dùng LoadBalancer của Cloud (AWS/GCP) hoặc dùng NodePort để máy ngoài truy cập
+  type: ClusterIP 
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80         # Người dùng truy cập qua cổng 80 (HTTP tiêu chuẩn)
+      targetPort: 3000 # Map vào cổng 3000 của container

@@ -1,0 +1,115 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  default.conf: |
+    server {
+        listen 80;
+        server_name localhost;
+
+        # Tối ưu hóa hiệu suất (Gzip)
+        gzip on;
+        gzip_types text/plain text/css application/json application/javascript text/xml;
+
+        # Hỗ trợ Next.js Static & Hot Reload
+        location /_next/ {
+            proxy_pass http://frontend-service:80; # Kết nối qua Port 80 của Service tối ưu ở bước trước
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+
+        # Điều hướng API Backend
+        location /api/ {
+            proxy_pass http://backend-service:80; # Kết nối qua Port 80 của Service
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            
+            # Tăng timeout cho các request xử lý lâu (như upload/phân loại dữ liệu)
+            proxy_read_timeout 90s;
+            proxy_connect_timeout 90s;
+        }
+
+        # Trang chính
+        location / {
+            proxy_pass http://frontend-service:80;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            
+            # Cấu hình để không bị lỗi khi reload trang trong SPA (React/Next)
+            try_files $uri $uri/ /index.html @proxy;
+        }
+
+        location @proxy {
+            proxy_pass http://frontend-service:80;
+        }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: saigon-nginx
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:stable-alpine
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        volumeMounts:
+        - name: config
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf
+      volumes:
+      - name: config
+        configMap:
+          name: nginx-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: LoadBalancer 
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

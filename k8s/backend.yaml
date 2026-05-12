@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: saigon-backend
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1       # Tạo thêm tối đa 1 pod mới trước khi xóa pod cũ
+      maxUnavailable: 0 # Luôn giữ ít nhất số lượng replicas đã định
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: saigon-backend
+        image: saigoncoins/saigoncoins-backend:latest
+        imagePullPolicy: Always # Đảm bảo luôn lấy bản mới nhất nếu dùng tag :latest
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+        ports:
+        - containerPort: 7000
+        # Kiểm tra trạng thái ứng dụng
+        livenessProbe:
+          httpGet:
+            path: /health # Giả định bạn có endpoint này
+            port: 7000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 7000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        env:
+        - name: MONGO_URI
+          valueFrom:
+            secretKeyRef:
+              name: saigon-secrets
+              key: MONGO_URI
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: ClusterIP # Hoặc LoadBalancer nếu muốn ra ngoài internet trực tiếp
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 80         # Port mà các dịch vụ khác gọi tới (thường dùng 80 cho chuẩn)
+      targetPort: 7000 # Port thực tế của app bên trong container

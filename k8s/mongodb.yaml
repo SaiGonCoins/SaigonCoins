@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: saigon-mongodb
+  labels:
+    app: mongodb
+spec:
+  replicas: 1
+  # Với Database, Recreate thường an toàn hơn RollingUpdate 
+  # để tránh 2 Pod cùng tranh chấp ghi vào 1 Volume cùng lúc.
+  strategy:
+    type: Recreate 
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo:6.0 # Nên dùng version cụ thể thay vì v1 (ví dụ 5.0, 6.0)
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "1Gi"   # MongoDB khá ngốn RAM khi dữ liệu nhiều lên
+          requests:
+            cpu: "300m"
+            memory: "512Mi" # Tăng request RAM để DB chạy mượt ngay từ đầu
+        ports:
+        - containerPort: 27017
+        # Kiểm tra MongoDB đã sẵn sàng chưa (dùng command nội bộ của mongo)
+        livenessProbe:
+          exec:
+            command:
+            - mongo
+            - --eval
+            - "db.adminCommand('ping')"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - mongo
+            - --eval
+            - "db.adminCommand('ping')"
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        volumeMounts:
+        - name: mongo-storage
+          mountPath: /data/db
+      volumes:
+      - name: mongo-storage
+        persistentVolumeClaim:
+          claimName: mongo-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+  # ClusterIP là đủ vì DB chỉ nên để Backend gọi nội bộ, không mở ra ngoài
+  type: ClusterIP
