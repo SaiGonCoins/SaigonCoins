@@ -14,7 +14,4 @@ COPY . .
 #Expose cổng 3000
 EXPOSE 3000
 
-# Build app trước khi chạy
-RUN npm run build
-# Chạy lệnh start thay vì dev
 CMD ["npm", "run", "dev"]
