@@ -33,18 +33,19 @@ spec:
         ports:
         - containerPort: 7000
         # Kiểm tra trạng thái ứng dụng
-        livenessProbe:
-          httpGet:
-            path: /health # Giả định bạn có endpoint này
-            port: 7000
-          initialDelaySeconds: 15
-          periodSeconds: 20
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 7000
-          initialDelaySeconds: 5
-          periodSeconds: 10
+        # livenessProbe:
+        #   httpGet:
+        #     path: /health # Giả định bạn có endpoint này
+        #     port: 7000
+        #   initialDelaySeconds: 15
+        #   periodSeconds: 20
+        # readinessProbe:
+        #   httpGet:
+        #     path: /health
+        #     port: 7000
+        #   initialDelaySeconds: 30
+        #   periodSeconds: 10
+        #   failureThreshold: 3
         env:
         - name: MONGO_URI
           valueFrom:
@@ -55,7 +56,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service
+  name: saigon-backend
 spec:
   type: ClusterIP # Hoặc LoadBalancer nếu muốn ra ngoài internet trực tiếp
   selector:

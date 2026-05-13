@@ -25,32 +25,38 @@ spec:
         imagePullPolicy: IfNotPresent # Tiết kiệm băng thông nếu image đã có trên node
         resources:
           limits:
-            cpu: "500m"
-            memory: "512Mi"
+            cpu: "1000m"   # Tăng CPU để biên dịch nhanh hơn
+            memory: "2Gi"   # Tăng hẳn lên 2GB RAM
           requests:
-            cpu: "200m" # Frontend thường tốn ít CPU hơn backend lúc chạy tĩnh
-            memory: "256Mi"
+            cpu: "500m"
+            memory: "1Gi"   # Đảm bảo lúc nào cũng có sẵn 1GB
         ports:
         - containerPort: 3000
         # Kiểm tra xem app đã khởi động xong chưa
-        readinessProbe:
-          httpGet:
-            path: / # Thường kiểm tra trang chủ
-            port: 3000
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        # Kiểm tra app có còn sống không
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 3000
-          initialDelaySeconds: 15
-          periodSeconds: 20
+        # readinessProbe:
+        #   httpGet:
+        #     path: / # Thường kiểm tra trang chủ
+        #     port: 3000
+        #   initialDelaySeconds: 30
+        #   periodSeconds: 10
+        #   failureThreshold: 3
+        # # Kiểm tra app có còn sống không
+        # livenessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 3000
+        #   initialDelaySeconds: 15
+        #   periodSeconds: 20
+        env:
+        - name: NEXT_PUBLIC_API_URL
+          value: "http://saigon-backend" # Trỏ thẳng tới tên Service của Backend trong K8s
+        - name: NODE_ENV
+          value: "development" # Đảm bảo app biết đang chạy ở mode nào nếu code cần
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-service
+  name: saigon-frontend
 spec:
   # Nếu bạn dùng LoadBalancer của Cloud (AWS/GCP) hoặc dùng NodePort để máy ngoài truy cập
   type: ClusterIP 

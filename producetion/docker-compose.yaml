@@ -8,7 +8,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ../nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - frontend
       - backend
@@ -20,7 +20,7 @@ services:
     #   - "27017:27017"
     volumes:
       - mongo_data:/data/db
-      - ../backup_data:/data/backup # Mount thư mục backup vào để dễ restore
+      - ../../backup_data:/data/backup:ro
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
