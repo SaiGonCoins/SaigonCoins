@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: saigon-frontend
   labels:
-    app: frontend
+    app: saigon-frontend
 spec:
   replicas: 1 # Có thể tăng lên 2 để dự phòng (High Availability)
   strategy:
@@ -13,11 +13,11 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: frontend
+      app: saigon-frontend
   template:
     metadata:
       labels:
-        app: frontend
+        app: saigon-frontend
     spec:
       containers:
       - name: saigon-frontend
@@ -49,7 +49,7 @@ spec:
         #   periodSeconds: 20
         env:
         - name: NEXT_PUBLIC_API_URL
-          value: "http://saigon-backend" # Trỏ thẳng tới tên Service của Backend trong K8s
+          value: "http://saigon-backend:80" # Trỏ thẳng tới tên Service của Backend trong K8s
         - name: NODE_ENV
           value: "development" # Đảm bảo app biết đang chạy ở mode nào nếu code cần
 ---
@@ -61,7 +61,7 @@ spec:
   # Nếu bạn dùng LoadBalancer của Cloud (AWS/GCP) hoặc dùng NodePort để máy ngoài truy cập
   type: ClusterIP 
   selector:
-    app: frontend
+    app: saigon-frontend
   ports:
     - protocol: TCP
       port: 80         # Người dùng truy cập qua cổng 80 (HTTP tiêu chuẩn)

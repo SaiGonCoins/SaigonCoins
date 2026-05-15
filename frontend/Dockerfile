@@ -14,4 +14,5 @@ COPY . .
 #Expose cổng 3000
 EXPOSE 3000
 
+# Chạy lệnh start thay vì dev
 CMD ["npm", "run", "dev"]

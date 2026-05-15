@@ -22,12 +22,12 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(",") 
-  : ["http://localhost", "http://localhost:3000", "http://localhost:3001"];
+  : ["http://localhost", "http://localhost:3000", "http://localhost:3001","http://localhost:7000"];
 
 app.use("/", indexRouter);
-app.use("/api/users", usersRouter);    
-app.use("/api/products", productsRouter);
-app.use("/api/orders", ordersRouter);
+app.use("/users", usersRouter);    
+app.use("/products", productsRouter);
+app.use("/orders", ordersRouter);
 
 app.use(cors({
   origin: allowedOrigins,

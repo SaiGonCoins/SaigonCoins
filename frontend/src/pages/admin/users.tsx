@@ -19,6 +19,7 @@ interface User {
     _id: string;
     name: string;
     email: string;
+    password: string;
     phone: string;
     role: "admin" | "customer" | number | string;
     createdAt: string;
@@ -29,6 +30,7 @@ export default function AdminUsers() {
     const [loadError, setLoadError] = useState<string | null>(null);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [phone, setPhone] = useState("");
     const [role, setRole] = useState<"admin" | "customer">("customer");
     const [editingId, setEditingId] = useState<string | null>(null);
@@ -55,33 +57,10 @@ export default function AdminUsers() {
         fetchData();
     }, []);
 
-    //     e.preventDefault();
-
-    //     const body = { name, email, phone, role };
-    //     const method = editingId ? "PUT" : "POST";
-    //     const url = editingId
-    //         ? `http://localhost:7000/users/${editingId}`
-    //         : `http://localhost:7000/users`;
-
-    //     try {
-    //         const res = await fetch(url, {
-    //             method,
-    //             headers: { "Content-Type": "application/json" },
-    //             body: JSON.stringify(body),
-    //         });
-
-    //         if (!res.ok) throw new Error("Thêm hoặc cập nhật user thất bại!");
-
-    //         alert(editingId ? "Cập nhật user thành công!" : "Thêm user thành công!");
-    //         router.reload();
-    //     } catch (error) {
-    //         alert((error as Error).message);
-    //     }
-    // };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const body = { name, email, phone, role };
+        const body = { name, email, password, phone, role };
         const method = editingId ? "PUT" : "POST";
         const url = editingId
             ? `${API_BASE}/users/${editingId}`
@@ -110,6 +89,7 @@ export default function AdminUsers() {
             // Reset form
             setName("");
             setEmail("");
+            setPassword("");
             setPhone("");
             setRole("customer");
             setEditingId(null);
@@ -117,25 +97,6 @@ export default function AdminUsers() {
             alert((error as Error).message);
         }
     };
-
-    // const handleDelete = async (id: string) => {
-    //     if (!id) return alert("Không tìm thấy ID user!");
-
-    //     const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa user này?");
-    //     if (!confirmDelete) return;
-
-    //     try {
-    //         const res = await fetch(`http://localhost:7000/users/${id}`, {
-    //             method: "DELETE",
-    //         });
-    //         if (!res.ok) throw new Error("Không thể xóa user!");
-
-    //         setUsers(users.filter((user) => user._id !== id));
-    //         alert("Xóa user thành công!");
-    //     } catch (error) {
-    //         alert((error as Error).message);
-    //     }
-    // };
 
     const handleDelete = async (id: string) => {
         if (!id) return alert("Không tìm thấy ID user!");
@@ -159,6 +120,7 @@ export default function AdminUsers() {
         setEditingId(user._id);
         setName(user.name);
         setEmail(user.email);
+        setPassword(user.password);
         setPhone(user.phone);
         // Normalize role (backend may use 0 for admin or strings)
         const normalizedRole =
@@ -178,22 +140,22 @@ export default function AdminUsers() {
                             <span>Danh sách User</span>
                             <div>
                                 {router.pathname !== '/admin/products' && (
-                                    <Link href="/admin/products" legacyBehavior>
+                                    <Link href="/admin/products" >
                                         <Button variant="secondary" size="sm" className="me-2">👉 Quản lý Sản phẩm</Button>
                                     </Link>
                                 )}
 
                                 {router.pathname !== '/admin/users' && (
-                                    <Link href="/admin/users" legacyBehavior>
+                                    <Link href="/admin/users" >
                                         <Button variant="secondary" size="sm" className="me-2">👉 Quản lý User</Button>
                                     </Link>
                                 )}
 
-                                <Link href="/admin/cart" legacyBehavior>
+                                <Link href="/admin/cart">
                                     <Button variant="info" size="sm" className="me-2">👉 Quản lý đơn hàng</Button>
                                 </Link>
 
-                                <Link href="/" legacyBehavior>
+                                <Link href="/" >
                                     <Button variant="light" size="sm">Về trang chủ</Button>
                                 </Link>
                             </div>
@@ -221,6 +183,15 @@ export default function AdminUsers() {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Nhập email"
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Password</Form.Label>
+                                    <Form.Control
+                                        type="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="Nhập password"
                                     />
                                 </Form.Group>
 
@@ -271,6 +242,7 @@ export default function AdminUsers() {
                                                 <th>ID</th>
                                                 <th>Tên</th>
                                                 <th>Email</th>
+                                                <th>Password</th>
                                                 <th>Điện thoại</th>
                                                 <th>Vai trò</th>
                                                 <th>Ngày tạo</th>
@@ -286,6 +258,7 @@ export default function AdminUsers() {
                                                     <td>{user._id}</td>
                                                     <td>{user.name}</td>
                                                     <td>{user.email}</td>
+                                                    <td>{user.password}</td>
                                                     <td>{user.phone}</td>
                                                     <td>
                                                         {user.role === "admin" ? "👑 Admin" : "👤 Khách"}

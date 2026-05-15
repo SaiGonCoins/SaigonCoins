@@ -1,0 +1,24 @@
+version: '3.8'
+name: saigon-frontend
+
+services:
+  frontend:
+    build: 
+      context: ../../frontend # Đường dẫn đến mã nguồn frontend
+      dockerfile: Dockerfile
+    container_name: saigon-frontend
+    hostname: saigon-frontend
+    expose:
+      - "3000"
+    volumes:
+      - ../../frontend:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
+    networks:
+      - ncc_network
+    restart: always
+
+networks:
+  ncc_network:
+    external: true

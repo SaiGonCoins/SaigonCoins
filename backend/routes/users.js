@@ -43,15 +43,16 @@ router.post("/login", async (req, res) => {
 // Admin: tạo user (từ trang quản trị)
 router.post("/", async (req, res) => {
   try {
-    const { name, email, phone, role } = req.body;
+    const { name, email,password, phone, role } = req.body;
     const existingUser = await User.getByEmail(email);
     if (existingUser) {
       return res.status(400).json({ message: "Email đã tồn tại" });
     }
-    // Tạo user với mật khẩu mặc định (admin có thể yêu cầu đổi sau)
-    const defaultPassword = "123456";
+    if (!password) {
+      return res.status(400).json({ message: "Vui lòng nhập mật khẩu cho người dùng mới" });
+    }
     const hashedPassword = await bcrypt.hash(defaultPassword, 10);
-    const newUser = new User(name, email, hashedPassword, phone, typeof role !== 'undefined' ? role : 1);
+    const newUser = new User(name, email,password, hashedPassword, phone, typeof role !== 'undefined' ? role : 1);
     await newUser.save();
     const created = await User.getByEmail(email);
     const { password: _, ...userData } = created;

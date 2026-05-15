@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: saigon-backend
   labels:
-    app: backend
+    app: saigon-backend
 spec:
   replicas: 1
   strategy:
@@ -13,11 +13,11 @@ spec:
       maxUnavailable: 0 # Luôn giữ ít nhất số lượng replicas đã định
   selector:
     matchLabels:
-      app: backend
+      app: saigon-backend
   template:
     metadata:
       labels:
-        app: backend
+        app: saigon-backend
     spec:
       containers:
       - name: saigon-backend
@@ -60,7 +60,7 @@ metadata:
 spec:
   type: ClusterIP # Hoặc LoadBalancer nếu muốn ra ngoài internet trực tiếp
   selector:
-    app: backend
+    app: saigon-backend
   ports:
     - protocol: TCP
       port: 80         # Port mà các dịch vụ khác gọi tới (thường dùng 80 cho chuẩn)

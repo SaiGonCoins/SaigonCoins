@@ -1,0 +1,22 @@
+version: '3.8'
+name: saigon-backend
+
+services:
+  backend:
+    build: 
+      context: ../../backend # Đường dẫn đến mã nguồn backend
+      dockerfile: Dockerfile
+    container_name: saigon-backend
+    hostname: saigon-backend
+    environment:
+      - MONGO_URI=mongodb://saigon-mongodb:27017/SaigonCoins # Kết nối tới container DB bằng tên
+    volumes:
+      - ../../backend:/app
+      - /app/node_modules
+    networks:
+      - ncc_network
+    restart: always
+
+networks:
+  ncc_network:
+    external: true

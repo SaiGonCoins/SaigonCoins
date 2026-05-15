@@ -1,0 +1,18 @@
+version: '3.8'
+name: saigon-proxy
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: saigon-nginx
+    ports:
+      - "8080:80" # Cổng truy cập từ bên ngoài
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - ncc_network
+    restart: always
+
+networks:
+  ncc_network:
+    external: true

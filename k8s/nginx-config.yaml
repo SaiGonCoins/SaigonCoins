@@ -80,7 +80,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-service
+  name: saigon-nginx
 spec:
   # LoadBalancer sẽ mở cổng ra ngoài Internet (nếu dùng Cloud hoặc MetalLB)
   type: LoadBalancer 
